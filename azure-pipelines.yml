@@ -63,5 +63,5 @@ stages:
             - script: az devops configure --defaults organization=https://dev.azure.com/strategycompass project="QuickMail" --use-git-aliases true
               displayName: 'Set default Azure DevOps organization and project'
             - bash: |
-                 az pipelines variable-group variable update --group-id 2 --name pass --value $(TF_OUT_quickmail_resource_group_2) --secret false --organization https://dev.azure.com/akashyadav1992 --project "AzureAutomation"
+                 az pipelines variable-group variable update --group-id 2 --name pass --value "$(TF_OUT_quickmail_resource_group_2)" --secret false --organization https://dev.azure.com/akashyadav1992 --project "AzureAutomation"
               displayName: 'Update Variable Group'
