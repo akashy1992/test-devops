@@ -18,7 +18,7 @@ stages:
         - task: PublishPipelineArtifact@1
           displayName: Publish Artifacts
           inputs:
-            targetPath: '$(System.DefaultWorkingDirectory)/terraform-manifests/QuickMail ClientWeb API AddIn IDP'
+            targetPath: '$(System.DefaultWorkingDirectory)'
             artifact: 'quickmailweb-terraform-manifests-out'
             publishLocation: 'pipeline'
 
