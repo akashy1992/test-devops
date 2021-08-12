@@ -37,9 +37,9 @@ stages:
               inputs:
                 command: 'output'
                 allowTelemetryCollection: false
-            - bash |
-               echo 'some_string is $(TF_OUT_quickmail_resource_group)'        
-               echo 'some_sensitive_string is $(TF_OUT_quickmail_resource_group_2)'
+            - bash: |
+                echo 'some_string is $(TF_OUT_quickmail_resource_group)'        
+                echo 'some_sensitive_string is $(TF_OUT_quickmail_resource_group_2)'
             - script: echo $(System.AccessToken) | az devops login
               env:
                 AZURE_DEVOPS_CLI_PAT: $(System.AccessToken)
