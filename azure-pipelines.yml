@@ -9,6 +9,7 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
+stages:
 - stage: DeployAKSClusters
   jobs:
     - deployment: DeployDevAKSCluster
@@ -21,31 +22,28 @@ pool:
           deploy:
             steps:
             - task: TerraformCLI@0
-              displayName: Terraform Init
               inputs:
                 command: 'init'
-                workingDirectory: '$(Pipeline.Workspace)'
+                allowTelemetryCollection: false
             - task: TerraformCLI@0
-              displayName: Terraform Plan
               inputs:
                 command: 'plan'
-                workingDirectory: '$(Pipeline.Workspace)'
+                allowTelemetryCollection: false
             - task: TerraformCLI@0
-              displayName: Terraform Apply
               inputs:
                 command: 'apply'
-                workingDirectory: '$(Pipeline.Workspace)'
+                allowTelemetryCollection: true
             - task: TerraformCLI@0
-              displayName: 'terraform output'
               inputs:
-                  command: output
+                command: 'output'
+                allowTelemetryCollection: false
+            - bash |
+               echo 'some_string is $(TF_OUT_quickmail_resource_group)'        
+               echo 'some_sensitive_string is $(TF_OUT_quickmail_resource_group_2)'
             - script: echo $(System.AccessToken) | az devops login
               env:
                 AZURE_DEVOPS_CLI_PAT: $(System.AccessToken)
               displayName: 'Login Azure DevOps Extension'
-            - bash |
-               echo 'some_string is $(TF_OUT_quickmail_resource_group)'        
-               echo 'some_sensitive_string is $(TF_OUT_quickmail_resource_group_2)'
             - script: az devops configure --defaults organization=https://dev.azure.com/strategycompass project="QuickMail" --use-git-aliases true
               displayName: 'Set default Azure DevOps organization and project'
             - bash: |
