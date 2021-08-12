@@ -10,6 +10,18 @@ pool:
   vmImage: ubuntu-latest
 
 stages:
+- stage: TerraformValidate
+  jobs:
+    - job: TerraformValidateJob
+      continueOnError: false
+      steps:
+        - task: PublishPipelineArtifact@1
+          displayName: Publish Artifacts
+          inputs:
+            targetPath: '$(System.DefaultWorkingDirectory)/terraform-manifests/QuickMail ClientWeb API AddIn IDP'
+            artifact: 'quickmailweb-terraform-manifests-out'
+            publishLocation: 'pipeline'
+
 - stage: DeployAKSClusters
   jobs:
     - deployment: DeployDevAKSCluster
@@ -25,18 +37,22 @@ stages:
               inputs:
                 command: 'init'
                 allowTelemetryCollection: false
+                workingDirectory: '$(Pipeline.Workspace)'
             - task: TerraformCLI@0
               inputs:
                 command: 'plan'
                 allowTelemetryCollection: false
+                workingDirectory: '$(Pipeline.Workspace)'
             - task: TerraformCLI@0
               inputs:
                 command: 'apply'
                 allowTelemetryCollection: true
+                workingDirectory: '$(Pipeline.Workspace)'
             - task: TerraformCLI@0
               inputs:
                 command: 'output'
                 allowTelemetryCollection: false
+                workingDirectory: '$(Pipeline.Workspace)'
             - bash: |
                 echo 'some_string is $(TF_OUT_quickmail_resource_group)'        
                 echo 'some_sensitive_string is $(TF_OUT_quickmail_resource_group_2)'
