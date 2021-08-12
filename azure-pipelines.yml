@@ -37,22 +37,22 @@ stages:
               inputs:
                 command: 'init'
                 allowTelemetryCollection: false
-                workingDirectory: '$(Pipeline.Workspace)'
+                workingDirectory: '$(Pipeline.Workspace)/quickmailweb-terraform-manifests-out'
             - task: TerraformCLI@0
               inputs:
                 command: 'plan'
                 allowTelemetryCollection: false
-                workingDirectory: '$(Pipeline.Workspace)'
+                workingDirectory: '$(Pipeline.Workspace)/quickmailweb-terraform-manifests-out'
             - task: TerraformCLI@0
               inputs:
                 command: 'apply'
                 allowTelemetryCollection: true
-                workingDirectory: '$(Pipeline.Workspace)'
+                workingDirectory: '$(Pipeline.Workspace)/quickmailweb-terraform-manifests-out'
             - task: TerraformCLI@0
               inputs:
                 command: 'output'
                 allowTelemetryCollection: false
-                workingDirectory: '$(Pipeline.Workspace)'
+                workingDirectory: '$(Pipeline.Workspace)/quickmailweb-terraform-manifests-out'
             - bash: |
                 echo 'some_string is $(TF_OUT_quickmail_resource_group)'        
                 echo 'some_sensitive_string is $(TF_OUT_quickmail_resource_group_2)'
